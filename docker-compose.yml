@@ -1,0 +1,16 @@
+services:                    # lista de containers que este projeto sobe
+  postgres:                    # nome do serviço (você vai usar em comandos)
+    image: postgres:17           # 1) imagem + versão FIXA (nunca "latest" — por quê?)
+    container_name: ipva_postgres
+    environment:               # variáveis que a imagem do Postgres lê ao iniciar
+      POSTGRES_USER: ${POSTGRES_USER}          # ${...} = lido do arquivo .env
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"            # 2) "porta_no_seu_PC:porta_dentro_do_container"
+    volumes:
+      - pgdata:/var/lib/postgresql/data   # 3) onde os dados sobrevivem ao container
+    restart: unless-stopped
+
+volumes:
+  pgdata:                    # 3) eclara o mesmo volume nomeado aqui
